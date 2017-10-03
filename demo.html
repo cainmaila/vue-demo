@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue Demo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
+</head>
+
+<body>
+    <div id="app" class="ui container">
+        <div class="ui input">
+            <input type="text" placeholder="請輸入內容" v-model="inputVal">
+        </div>
+        <h2 id="cain">{{inputVal}}</h2>
+        <my-div v-text="inputVal"></my-div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.js"></script>
+    <script>
+        var cain = document.getElementById('cain')
+
+        Vue.component('my-div', {
+            template: '<h1>123</h1>',
+        })
+
+        new Vue({
+            el: '#app',
+            data: {
+                color: '#f00',
+                inputVal: '',
+                winW: 0,
+                winH: 0,
+                ww: 0,
+            },
+            methods: {
+                test: function () {
+                    var vm = this //vue
+                },
+            },
+            watch: {
+                winW: function (val, old) {
+                    if (old < val) {
+
+                    } else {
+
+                    }
+                },
+            },
+            mounted: function () {
+                fun
+                // console.log(1, this)
+                var vm = this //vue
+                window.addEventListener('resize', onResize)
+                onResize()
+
+                function onResize() {
+                    console.log(2, this) //window
+                    vm.winW = window.innerWidth
+                    // console.log(window.innerWidth)
+
+                    vm.ww = $('#cain').width()
+                    vm.ww = cain.style.width
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

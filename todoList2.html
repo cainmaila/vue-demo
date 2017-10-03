@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css">
+    <style>
+        .addMod {
+            height: 50px;
+            margin: 50px 0px 0px 50px;
+        }
+
+        .del {
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" class="container">
+        <div class="addMod">
+            <input type="text" placeholder="請輸入內容" v-model="inpVal" @keyup.enter="addItem">
+            <button @click="addItem">新增</button>
+        </div>
+        <hr>
+        <ul class="list-group" v-for="(item,index) in list" @click="itemClick(index)" @dragenter="onDragenter(index)">
+            <li class="list-group-item">
+                <input type="text" v-model="item.txt" v-if="edit==index" @keyup.enter="itemChange" @click.stop="">
+                <div draggable="true" v-else @dragend="onDragend(index)" style="cursor:move">
+                    {{item.txt}}
+                    <button type="button" class="del btn btn-warning-outline" @click.stop="" @dblclick.stop="del(index)">DEL</button>
+                </div>
+            </li>
+        </ul>
+        <!-- <div class="item" v-for="(item,index) in list" @click="itemClick(index)" @dragenter="onDragenter(index)">
+            <input type="text" v-model="item.txt" v-if="edit==index" @keyup.enter="itemChange" @click.stop="">
+            <div draggable="true" v-else @dragend="onDragend(index)">
+                {{item.txt}}
+                <span @click.stop="" @dblclick.stop="del(index)">DEL</span>
+            </div>
+        </div> -->
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                inpVal: '',
+                list: [],
+                edit: -1,
+                dragIndex: -1,
+            },
+            methods: {
+                itemClick: function (index) {
+                    if (this.edit === index) {
+                        this.edit = -1
+                    } else {
+                        this.edit = index
+                    }
+                },
+                itemChange: function () {
+                    this.edit = -1
+                },
+                addItem: function () {
+                    if (this.inpVal === '') return
+                    this.list.push({
+                        txt: this.inpVal
+                    })
+                    this.inpVal = ''
+                },
+                del: function (index) {
+                    this.list.splice(index, 1)
+                },
+                onDragend: function (index) {
+                    let item = this.list.splice(index, 1)[0]
+                    this.list.splice(this.dragIndex, 0, item)
+                },
+                onDragenter: function (index) {
+                    this.dragIndex = index
+                },
+            },
+            watch: {
+                list: function (val) {
+                    localStorage.todoListData = JSON.stringify(val)
+                }
+            },
+            mounted: function () {
+                if (localStorage.todoListData) {
+                    this.list = JSON.parse(localStorage.todoListData)
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

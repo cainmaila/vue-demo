@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue Demo</title>
+    <style>
+        .drag {
+            position: relative;
+            width: 100%;
+            height: 100px;
+            background: #AAA;
+            border-radius: 50px;
+        }
+
+        .drag .ro {
+            top: 0px;
+            left: 0px;
+            position: absolute;
+            height: 100px;
+            width: 100px;
+            background: #f00;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" class="ui container">
+        <div class="drag" @mousemove="onMove">
+            <div class="ro" :style="{left:roLeftPx}" @mousedown="onDown" @mouseup="onUp"></div>
+        </div>
+        <h2>{{roVal}}</h2>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                roVal: 0,
+                downX: 0,
+                roLeft: 0,
+                isDown: false,
+            },
+            computed: {
+                roLeftPx: function () {
+                    return this.roLeft + 'px';
+                },
+            },
+            methods: {
+                onDown: function (e) {
+                    this.downX = e.clientX
+                    this.isDown = true
+                },
+                onUp: function () {
+                    this.isDown = false
+                },
+                onMove: function (e) {
+                    if (this.isDown) {
+                        this.roLeft = e.clientX - this.downX
+                    }
+                    // console.log(e.clientX)
+                },
+            }
+        })
+    </script>
+</body>
+
+</html>

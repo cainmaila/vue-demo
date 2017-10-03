@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .addMod {
+            height: 50px;
+            margin: 50px 0px 0px 50px;
+        }
+
+        .item {
+            height: 35px;
+            background: #e6c4b4;
+            padding: 0px 10px 0px 10px;
+            margin: 2px 0px 0px 0px;
+            line-height: 35px;
+        }
+
+        .item span {
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="addMod">
+            <input type="text" placeholder="請輸入內容" v-model="inpVal" @keyup.enter="addItem">
+            <button @click="addItem">新增</button>
+        </div>
+        <hr>
+        <div class="item" v-for="(item,index) in list" @click="itemClick(index)">
+            <input type="text" v-model="item.txt" v-if="edit==index" @keyup.enter="itemChange">
+            <div v-else>
+                {{item.txt}}
+                <span @click.stop="" @dblclick.stop="del(index)">DEL</span>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                inpVal: '', //輸入框內容
+                list: [], //資料列表
+                edit: -1, //目前正在編輯的key
+            },
+            methods: {
+                //開始編輯
+                itemClick: function (index) {
+                    this.edit = index
+                },
+                //取消編輯(編輯完成)
+                itemChange: function () {
+                    this.edit = -1
+                },
+                //新增一筆資料到
+                addItem: function () {
+                    if (this.inpVal === '') return //如果沒有輸入就不新增
+                    this.list.push({
+                        txt: this.inpVal
+                    })
+                    this.inpVal = ''
+                },
+                //刪除一筆資料
+                del: function (index) {
+                    this.list.splice(index, 1)
+                }
+            },
+            watch: {
+                //存檔 上課再說明
+                list: function (val) {
+                    localStorage.todoListData = JSON.stringify(val)
+                },
+            },
+            mounted: function () {
+                //讀檔 上課再說明
+                if (localStorage.todoListData) {
+                    this.list = JSON.parse(localStorage.todoListData)
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

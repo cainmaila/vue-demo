@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .a {
+            width: 200px;
+            height: 200px;
+            background: #f00;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="a" :style="{background:color}"></div>
+        <input type="text" v-model="val">
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                val: 0,
+            },
+            computed: {
+                color: function () {
+                    if (this.val === '1') {
+                        return '#0f0'
+                    } else if (this.val === '2') {
+                        return '#0ff'
+                    } else {
+                        return '#f00'
+                    }
+                },
+            },
+            watch: {
+                // val: function (num, old) {
+                //     if (this.val === '1') {
+                //         this.color = '#0f0'
+                //     } else if (this.val === '2') {
+                //         this.color = '#0ff'
+                //     } else {
+                //         this.color = '#f00'
+                //     }
+                // },
+            },
+        })
+    </script>
+</body>
+
+</html>
